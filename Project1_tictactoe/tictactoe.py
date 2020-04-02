@@ -15,26 +15,28 @@ def getPlayerMove(board):
         getPlayerMove(board)
     else:
         board[choice] = "X"
+    return board
 
 def checkForWin(board):
-    if board[1] == board[2] and board[1]==board[3] and board[1]!="[]":
+    if board[1] == board[2]==board[3] != "[]":
         return True
-    elif board[4] == board[5] and board[4]==board[6] and board[4]!="[]":
+    elif board[4] == board[5]==board[6] != "[]":
         return True
-    elif board[7] == board[8] and board[7]==board[9] and board[7]!="[]":
+    elif board[7] == board[8]==board[9] != "[]":
         return True
-    elif board[1] == board[4] and board[1]==board[7] and board[1]!="[]":
+    elif board[1] == board[4]==board[7] != "[]":
         return True
-    elif board[2] == board[5] and board[2]==board[8] and board[2]!="[]":
+    elif board[2] == board[5]==board[8] != "[]":
         return True
-    elif board[3] == board[6] and board[3]==board[9] and board[3]!="[]":
+    elif board[3] == board[6]==board[9] != "[]":
         return True
-    elif board[1] == board[5] and board[1]==board[9] and board[1]!="[]":
+    elif board[1] == board[5]==board[9] != "[]":
         return True
-    elif board[3] == board[7] and board[3]==board[9] and board[3]!="[]":
+    elif board[3] == board[7]==board[9] != "[]":
         return True
     else:
         return False
+    
 
 def endGame(winner):
     if winner=="Tie":
@@ -51,11 +53,12 @@ def checkForTie(board):
     while n<10:
         if board[n] == "[]":
             isTie = False
+        n += 1 #n=n+1
     return isTie
 
 def playHumanTurn(board):
     showTheBoard(board)
-    getPlayerMove(board)
+    board = getPlayerMove(board)
     if checkForWin(board):
         endGame("Human")
     else:
@@ -63,39 +66,46 @@ def playHumanTurn(board):
             endGame("Tie")
         else:
             playAITurn(board)
+
 def getAIMove(board):
+    nextMoveChoices = []
     if board[1] == "[]" :
-        if board[2] == board[3] or board[4] == board[7] or board[5] == board[9] :
-            board[1] = "O"
-    elif board[2] == "[]":
-        if board[5] == board[8] or board[1] == board[3]:
-            board[2] = "O"
-    elif board[3] == "[]":
-        if board[1] == board[2] or board[5] == board[7] or board[6] == board[9]:
-            board[3] = "O"
-    elif board[4] == "[]":
-        if board[1] == board[7] or board[5] == board[6]:
-            board[4] = "O"
-    elif board[5] == "[]":
-        if board[2] == board[8] or board[3] == board[7] or board[1] == board[9] or board[4] == board[6]:
-            board[5] = "O"
-    elif board[6] == "[]":
-        if board[3] == board[9] or board[5] == board[4]:
-            board[6] = "O"
-    elif board[7] == "[]":
-        if board[8] == board[9] or board[4] == board[1] or board[5] == board[3]:
-            board[7] = "O"
-    elif board[8] == "[]":
-        if board[5] == board[2] or board[7] == board[9]:
-            board[8] = "O"
-    elif board[9] == "[]":
-        if board[5] == board[1] or board[6] == board[3] or board[8] == board[7]:
-            board[9] = "O"                                                                
+        if board[2] == board[3] == "X" or board[4] == board[7] == "X" or board[5] == board[9] == "X" :
+            nextMoveChoices.append(1)
+    if board[2] == "[]":
+        if board[5] == board[8]== "X" or board[1] == board[3]== "X":
+            nextMoveChoices.append(2)
+    if board[3] == "[]":
+        if board[1] == board[2]== "X" or board[5] == board[7]== "X" or board[6] == board[9]== "X":
+            nextMoveChoices.append(3)
+    if board[4] == "[]":
+        if board[1] == board[7]== "X" or board[5] == board[6]== "X":
+            nextMoveChoices.append(4)
+    if board[5] == "[]":
+        if board[2] == board[8]== "X" or board[3] == board[7]== "X" or board[1] == board[9]== "X" or board[4] == board[6]== "X":
+            nextMoveChoices.append(5)
+    if board[6] == "[]":
+        if board[3] == board[9]== "X" or board[5] == board[4]== "X":
+            nextMoveChoices.append(6)
+    if board[7] == "[]":
+        if board[8] == board[9]== "X" or board[4] == board[1]== "X" or board[5] == board[3]== "X":
+            nextMoveChoices.append(7)
+    if board[8] == "[]":
+        if board[5] == board[2]== "X" or board[7] == board[9]== "X":
+            nextMoveChoices.append(8)
+    if board[9] == "[]":
+        if board[5] == board[1]== "X" or board[6] == board[3]== "X" or board[8] == board[7]== "X":
+            nextMoveChoices.append(9)                                                                
+    if nextMoveChoices == []:
+        choice = random.randrange(1, 9, 1)
+        board[choice] = "O"
     else:
-        random = "O"                
+        choice = random.choice(nextMoveChoices)
+        board[choice] = "O"
+    return board              
 
 def playAITurn(board):  
-    getAIMove(board)
+    board = getAIMove(board)
     if checkForWin(board):
         endGame("Computer")
     else:
@@ -107,8 +117,10 @@ def playAITurn(board):
 def startGame():
     board = {1:"[]", 2:"[]", 3:"[]", 4:"[]", 5:"[]", 6:"[]", 7:"[]", 8:"[]", 9:"[]"}
     isHumanTurn = random.choice([True, False])
-
+    isHumanTurn = True
     if isHumanTurn:
         playHumanTurn(board)
     else:
         playAITurn(board)
+
+startGame()
