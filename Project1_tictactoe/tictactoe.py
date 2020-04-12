@@ -117,7 +117,6 @@ def playAITurn(board):
 def startGame():
     board = {1:"[]", 2:"[]", 3:"[]", 4:"[]", 5:"[]", 6:"[]", 7:"[]", 8:"[]", 9:"[]"}
     isHumanTurn = random.choice([True, False])
-    isHumanTurn = True
     if isHumanTurn:
         playHumanTurn(board)
     else:
